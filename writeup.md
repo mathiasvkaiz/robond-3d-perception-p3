@@ -36,13 +36,16 @@ You're reading it!
 
 ### Exercise 1, 2 and 3 pipeline implemented
 #### 1. Complete Exercise 1 steps. Pipeline for filtering and RANSAC plane fitting implemented.
+The code is placed in files `project.py` (path: robond-3d-perception-p3/pr2_robot/scripts/) in method `pcl_callback()` from line 57 to 101. Following image shows a result of the objects separated from table and downsampled by voxel grid.
+
+![demo-1](images/filtered.png)
 
 #### 2. Complete Exercise 2 steps: Pipeline including clustering for segmentation implemented.  
 
 #### 2. Complete Exercise 3 Steps.  Features extracted and SVM trained.  Object recognition implemented.
 Here is an example of how to include an image in your writeup.
 
-![demo-1](https://user-images.githubusercontent.com/20687560/28748231-46b5b912-7467-11e7-8778-3095172b7b19.png)
+
 
 ### Pick and Place Setup
 
