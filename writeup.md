@@ -36,14 +36,35 @@ You're reading it!
 
 ### Exercise 1, 2 and 3 pipeline implemented
 #### 1. Complete Exercise 1 steps. Pipeline for filtering and RANSAC plane fitting implemented.
-The code is placed in files `project.py` (path: robond-3d-perception-p3/pr2_robot/scripts/) in method `pcl_callback()` from line 57 to 101. Following image shows a result of the objects separated from table and downsampled by voxel grid.
+The code is placed in file `project.py` (path: robond-3d-perception-p3/pr2_robot/scripts/) in method `pcl_callback()` from line 57 to 101. Following image shows a result of the objects separated from table and downsampled by voxel grid.
 
 ![demo-1](images/filtered.png)
 
+
+Following steps were performed:
+- Statistical Outlier Filtering is used to reduce noise. Here i used the standard parameters.
+- Voxel Downsamplig is used to reduce the resolution of the cloud so that there are less points to calculate. Hre eis used a leaf size of 0.01. This resulted in a good tradeoff of reducing noise and still having the points together.
+- After that a PassThrough filter was applied so that we have a smaller regioj of interest. Fist i applied a Z-Axis filter only. This resulted in having the table and the objcts but also some parts of the left-hand and right-hand boxes. So i had to filter o the Y-Axis as well (see code lines 83ff).
+- Finally i applied the RANSAC filter and identified the inliners and resulting outliers (code line 92ff)
+
 #### 2. Complete Exercise 2 steps: Pipeline including clustering for segmentation implemented.  
+The code is placed in file `project.py` (path: robond-3d-perception-p3/pr2_robot/scripts/) in method `pcl_callback()` from line 103 to 145. Following image shows a result of the clusters.
+
+![demo-1](images/clusters.png)
+
+First i created a white cloud by extracting the position values. After that i applied Euclidiean Cluster Extraction (some neighboring algorithm like K-Neighbors) with forllowing parameters:
+- TOLERANCE = 0.02
+- MIN_CLUSTER_SIZE = 10
+- MAX_CLUSTER_SIZE = 1000
+
+This lead to good results clustering the objects and filtering the left noise completely out.
+After that the clusters were colored and added to a new PointCloud (see code 134, 135)
+
+Finally the table, objects and clusters were published as ROS messages.
+
 
 #### 2. Complete Exercise 3 Steps.  Features extracted and SVM trained.  Object recognition implemented.
-Here is an example of how to include an image in your writeup.
+
 
 
 
