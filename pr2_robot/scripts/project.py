@@ -174,7 +174,7 @@ def pcl_callback(pcl_msg):
         # Add the detected object to the list of detected objects.
         do = DetectedObject()
         do.label = label
-        do.cloud = ros_cluster_cloud
+        do.cloud = cloud
         detected_objects.append(do)
 
     rospy.loginfo("Detected {} objects: {}".format(len(detected_objects_labels), detected_objects_labels))
@@ -212,6 +212,8 @@ def pr2_mover(object_list):
         labels.append(object.label)
         points_arr = ros_to_pcl(object.cloud).to_array()
         centroids.append(np.mean(points_arr, axis=0)[:3])
+
+    
     
     
     # Get/Read parameters
@@ -266,7 +268,7 @@ def pr2_mover(object_list):
         #    print "Service call failed: %s"%e
 
     # Output your request parameters into output yaml file
-    file = "../config/output_" + str(scene) + ".yml"
+    file = "output_" + str(scene) + ".yml"
     send_to_yaml(file, dict_list)
 
 
