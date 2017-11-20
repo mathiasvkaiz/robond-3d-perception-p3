@@ -69,6 +69,18 @@ The code is placed in file `project.py` (path: robond-3d-perception-p3/pr2_robot
 Following code is used for calulating the histograms:
 ```
 python
+ import matplotlib.colors
+import matplotlib.pyplot as plt
+import numpy as np
+from pcl_helper import *
+
+
+def rgb_to_hsv(rgb_list):
+    rgb_normalized = [1.0*rgb_list[0]/255, 1.0*rgb_list[1]/255, 1.0*rgb_list[2]/255]
+    hsv_normalized = matplotlib.colors.rgb_to_hsv([[rgb_normalized]])[0][0]
+    return hsv_normalized
+
+
 def compute_color_histograms(cloud, using_hsv=False):
 
     # Compute histograms for the clusters
@@ -119,9 +131,9 @@ def compute_normal_histograms(normal_cloud):
         norm_z_vals.append(norm_component[2])
 
     # TODO: Compute histograms of normal values (just like with color)
-    norm_x_hist = np.histogram(norm_x_vals, bins=32, range=(-1, 1))
-    norm_y_hist = np.histogram(norm_y_vals, bins=32, range=(-1, 1))
-    norm_z_hist = np.histogram(norm_z_vals, bins=32, range=(-1, 1))
+    norm_x_hist = np.histogram(norm_x_vals, bins=32, range=(0, 256))
+    norm_y_hist = np.histogram(norm_y_vals, bins=32, range=(0, 256))
+    norm_z_hist = np.histogram(norm_z_vals, bins=32, range=(0, 256))
 
     # TODO: Concatenate and normalize the histograms
     hist_features = np.concatenate((norm_x_hist[0], norm_y_hist[0], norm_z_hist[0])).astype(np.float64)
@@ -131,6 +143,7 @@ def compute_normal_histograms(normal_cloud):
     normed_features = hist_features / np.sum(hist_features)
 
     return normed_features
+
 ```
 Here i calcluate three channels (HSV or normalized depending on the function) concatenate the histograms to one feature vector and normalize those values of the feature vectors. After that i use a trained SVM Classifier on the given objects on the table (see code 165ff). The training data  was captured before the project run and saved in `model.sav` and training was performed and saved in `training_set.sav` according to the course lessons and based on the overall set of possible objects laying on the table in each scene.
 
